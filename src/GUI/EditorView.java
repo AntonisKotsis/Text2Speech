@@ -73,14 +73,15 @@ public class EditorView {
 	    //submenu options
 	    JMenuItem whole_text_opt_norm = new JMenuItem("Entire File");
 	    JMenuItem line_opt_norm=new JMenuItem("Single Line");
-	    JMenuItem whole_text_opt_rev = new JMenuItem("Entire File");
-	    JMenuItem line_opt_rev=new JMenuItem("Single Line");
+	    JMenuItem whole_text_opt_rev = new JMenuItem("Entire Reverse File");
+	    JMenuItem line_opt_rev=new JMenuItem("Single Reverse Line");
 	    
 	    //Normal Submenu
 	    normalSpeechMenu=new JMenu("Normal");
 	    normalSpeechMenu.add(whole_text_opt_norm);
 		normalSpeechMenu.add(line_opt_norm);
 		speechMenu.add(normalSpeechMenu);
+		//add action listeners for normal text
 		whole_text_opt_norm.addActionListener(cf.createCommand("_doc2text"));
 		line_opt_norm.addActionListener(cf.createCommand("_line2text"));
 		
@@ -89,6 +90,9 @@ public class EditorView {
 		reverseSpeechMenu.add(whole_text_opt_rev);
 		reverseSpeechMenu.add(line_opt_rev);
 		speechMenu.add(reverseSpeechMenu);   
+		//add action listeners for reversed text
+		whole_text_opt_rev.addActionListener(cf.createCommand("_revdoc2text"));
+		line_opt_rev.addActionListener(cf.createCommand("_revline2text"));
 		
 		//Complete the following in sprint 2 
 		blank_menu_1=new JMenu("    			");

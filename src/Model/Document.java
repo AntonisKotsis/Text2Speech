@@ -132,6 +132,55 @@ public class Document {
 	    System.out.println(lineContent);
 	}
 	
+	//converts reverse content to speech
+	public void playReversedContent() {
+		String normalContent=ev.getEditorText();
+		String reversedContent=createReverseContent(normalContent);
+		System.setProperty("freetts.voices", "com.sun.speech.freetts.en.us.cmu_us_kal.KevinVoiceDirectory");
+	    Voice voice =VoiceManager.getInstance().getVoice("kevin16");
+	    if (voice != null) {
+	             voice.allocate();//Allocating Voice
+	             voice.speak(reversedContent);
+	             voice.deallocate();
+	    }
+	}
+	
+	//converts reverse line to speech
+	public void playReversedLine() {
+		String lineContent=ev.getEditorSelectedLine();
+		String reversedContent=createReverseContent(lineContent);
+		System.setProperty("freetts.voices", "com.sun.speech.freetts.en.us.cmu_us_kal.KevinVoiceDirectory");
+	    Voice voice =VoiceManager.getInstance().getVoice("kevin16");
+	    if (voice != null) {
+	             voice.allocate();//Allocating Voice
+	             voice.speak(reversedContent);
+	             voice.deallocate();
+	    }
+	}
+	
+	
+	//creates the reverse text
+	//we can use it for the lines too
+	private String createReverseContent(String text) {
+		StringBuilder sb=new StringBuilder();
+		//replace all new lines ('\n') with spaces
+		String replaceNewLines=text.replaceAll("[\\t\\n\\r]+"," ");
+		//split the content using spaces
+		String [] normalContentTokens= replaceNewLines.split(" ");
+		int j=normalContentTokens.length;
+		String [] reverseContentTokens=new String [j];
+		for(int i=0;i<normalContentTokens.length;i++) {
+			//System.out.println(normalContentTokens[i]);
+			reverseContentTokens[j-1]=normalContentTokens[i];
+			j--;
+		}
+		for(int k=0;k<reverseContentTokens.length;k++) {
+			//System.out.println(reverseContentTokens[k]);
+			sb.append(reverseContentTokens[k]).append(" ");
+		}
+		return sb.toString();
+	}
+	
 	//clears the documents list
 	public void emptyList() {
 		documents.clear();
