@@ -11,7 +11,14 @@ public class LineToSpeech implements ActionListener {
 	public void actionPerformed(ActionEvent arg0) {
 		// TODO Auto-generated method stub
 		Document doc =new Document();
-		doc.playLine();
+		System.out.println(arg0.getActionCommand());
+		if(arg0.getActionCommand().equals("Single Line")) {
+			doc.playLine();
+		}
+		else {
+			doc.playReversedLine();
+		}
+		
 	}
 
 }

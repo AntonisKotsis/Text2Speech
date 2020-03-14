@@ -22,6 +22,11 @@ public class CommandsFactory {
 			return new DocumentToSpeech();
 		case "_line2text":
 			return new LineToSpeech();
+		case "_revdoc2text":
+			return new DocumentToSpeech();
+		case "_revline2text":
+			return new LineToSpeech();
+		
 		default:
 			return new exitDocument();
 		}
