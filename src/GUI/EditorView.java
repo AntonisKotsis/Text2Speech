@@ -81,6 +81,9 @@ public class EditorView {
 	    normalSpeechMenu.add(whole_text_opt_norm);
 		normalSpeechMenu.add(line_opt_norm);
 		speechMenu.add(normalSpeechMenu);
+		whole_text_opt_norm.addActionListener(cf.createCommand("_doc2text"));
+		line_opt_norm.addActionListener(cf.createCommand("_line2text"));
+		
 		//Reverse Submenu
 		reverseSpeechMenu=new JMenu("Reverse");
 		reverseSpeechMenu.add(whole_text_opt_rev);
@@ -200,5 +203,9 @@ public class EditorView {
 	
 	public String getEditorText() {
 		return text_file_input.getText();
+	}
+	
+	public String getEditorSelectedLine() {
+		return text_file_input.getSelectedText();
 	}
 }

@@ -18,7 +18,10 @@ public class CommandsFactory {
 			return new editDocument();
 		case "_save":
 			return new saveDocument();
-			
+		case "_doc2text":
+			return new DocumentToSpeech();
+		case "_line2text":
+			return new LineToSpeech();
 		default:
 			return new exitDocument();
 		}
