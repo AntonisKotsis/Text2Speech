@@ -36,13 +36,7 @@ public class Document {
 	
 	public void  createNewEmptyDocument(Document doc) {
 		documents.add(doc);
-	    System.setProperty("freetts.voices", "com.sun.speech.freetts.en.us.cmu_us_kal.KevinVoiceDirectory");
-        Voice voice =VoiceManager.getInstance().getVoice("kevin16");
-        if (voice != null) {
-               voice.allocate();//Allocating Voice
-               voice.speak("Kosta sai gamao");
-               voice.deallocate();
-        }
+	   
 	}
 	
 	public void editDocument(Document doc) {
@@ -104,12 +98,39 @@ public class Document {
 			sb.append(in.nextLine()).append("\n");
 			
 		}
-		System.out.println(sb.toString());
+		//System.out.println(sb.toString());
+		//we used a string builder to take the text from the file and 
+		//we changed the content of the editor using this string builder
 		ev.setTextArea(sb.toString());
 		in.close();
 
 	}
-	
+	//converts document to speech
+	public void playContent() {
+		//in the following string we store the content of the document which
+		//is currently open
+		String docContent=ev.getEditorText();
+		System.out.println(docContent);
+		System.setProperty("freetts.voices", "com.sun.speech.freetts.en.us.cmu_us_kal.KevinVoiceDirectory");
+	    Voice voice =VoiceManager.getInstance().getVoice("kevin16");
+	    if (voice != null) {
+	             voice.allocate();//Allocating Voice
+	             voice.speak(docContent);
+	             voice.deallocate();
+	    }
+	}
+	//converts line to speech
+	public void playLine() {
+		String lineContent=ev.getEditorSelectedLine();
+		System.setProperty("freetts.voices", "com.sun.speech.freetts.en.us.cmu_us_kal.KevinVoiceDirectory");
+	    Voice voice =VoiceManager.getInstance().getVoice("kevin16");
+	    if (voice != null) {
+	             voice.allocate();//Allocating Voice
+	             voice.speak(lineContent);
+	             voice.deallocate();
+	    }
+	    System.out.println(lineContent);
+	}
 	
 	//clears the documents list
 	public void emptyList() {
