@@ -10,7 +10,12 @@ public class editDocument implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		EditorView ed=new EditorView();
-		ed.text_file_input.setEditable(true);
+		if(ed.getIsOpenFile()) {
+			ed.text_file_input.setEditable(true);
+		}
+		else {
+			System.out.println("There isn't an open file");
+		}
 	}
 
 }

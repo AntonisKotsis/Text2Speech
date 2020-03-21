@@ -9,6 +9,7 @@ package GUI;
 import Commands.*;
 import Model.Document;
 
+
 import java.awt.GridLayout;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -20,11 +21,13 @@ import javax.swing.*;
 public class EditorView {
 	private JFrame editorFrame;
 	private JMenuBar action_menu_bar;
-	private JMenu fileMenu,speechMenu,normalSpeechMenu,reverseSpeechMenu;
+	private JMenu fileMenu,speechMenu,audioMenu,encodingMenu,normalSpeechMenu,reverseSpeechMenu;
 	private JMenu blank_menu_1,blank_menu_2,blank_menu_3,blank_menu_4,blank_menu_5;	//use these to create a margin between menus
 	public static JTextArea text_file_input;
 	
 	private String fileTitle,fileAuthor,fileName;
+	
+	private static boolean isOpenFile=false;
 	
 	private Document Doc ;
 	
@@ -40,7 +43,7 @@ public class EditorView {
 		//sets the orientation of menu bar to horizontal
 		action_menu_bar.setLayout(new GridLayout(1,0));
 		
-		//File menu
+		//***File menu
 	    fileMenu = new JMenu("File");
 	    fileMenu.setMnemonic(KeyEvent.VK_F);
 	    action_menu_bar.add(fileMenu);
@@ -66,7 +69,7 @@ public class EditorView {
 	    edit_file_opt.addActionListener(cf.createCommand("_edit"));
 	    exit_file_opt.addActionListener(cf.createCommand("_exit"));
 	    
-	    //Speech Menu
+	    //***Speech Menu
 	    speechMenu = new JMenu("Speech");
 	    action_menu_bar.add(speechMenu);
 	    
@@ -76,41 +79,68 @@ public class EditorView {
 	    JMenuItem whole_text_opt_rev = new JMenuItem("Entire Reverse File");
 	    JMenuItem line_opt_rev=new JMenuItem("Single Reverse Line");
 	    
-	    //Normal Submenu
+	    //Normal Content Submenu
 	    normalSpeechMenu=new JMenu("Normal");
 	    normalSpeechMenu.add(whole_text_opt_norm);
+	    normalSpeechMenu.addSeparator();
 		normalSpeechMenu.add(line_opt_norm);
 		speechMenu.add(normalSpeechMenu);
+		speechMenu.addSeparator();
 		//add action listeners for normal text
 		whole_text_opt_norm.addActionListener(cf.createCommand("_doc2text"));
 		line_opt_norm.addActionListener(cf.createCommand("_line2text"));
 		
-		//Reverse Submenu
+		//Reverse Content Submenu
 		reverseSpeechMenu=new JMenu("Reverse");
 		reverseSpeechMenu.add(whole_text_opt_rev);
+		reverseSpeechMenu.addSeparator();
 		reverseSpeechMenu.add(line_opt_rev);
 		speechMenu.add(reverseSpeechMenu);   
 		//add action listeners for reversed text
 		whole_text_opt_rev.addActionListener(cf.createCommand("_revdoc2text"));
 		line_opt_rev.addActionListener(cf.createCommand("_revline2text"));
 		
-		//Complete the following in sprint 2 
-		blank_menu_1=new JMenu("    			");
-		blank_menu_1.disable();
-		blank_menu_2=new JMenu("    			");
-		blank_menu_2.disable();
-		blank_menu_3=new JMenu("    			");
-		blank_menu_3.disable();
-		blank_menu_4=new JMenu("    			");
-		blank_menu_4.disable();
-		blank_menu_5=new JMenu("    			");
-		blank_menu_5.disable();
 		
-		action_menu_bar.add(blank_menu_1);
-		action_menu_bar.add(blank_menu_2);
-	    action_menu_bar.add(blank_menu_3);
-	    action_menu_bar.add(blank_menu_4);
-	    action_menu_bar.add(blank_menu_5);
+		//***Audio Menu
+		audioMenu=new JMenu("Audio");
+		action_menu_bar.add(audioMenu);
+		JMenuItem audioSettings=new JMenuItem("Audio Settings");
+		audioMenu.add(audioSettings);
+		audioSettings.addActionListener(cf.createCommand("_audioSettings"));
+		
+		//***Encoding Menu
+		encodingMenu=new JMenu("Encode");
+		action_menu_bar.add(encodingMenu);
+		JMenuItem entire_encoding=new JMenuItem("Entire File");
+		JMenuItem single_line_encoding=new JMenuItem("Single Line");
+		JMenuItem tune_encoding=new JMenuItem("Encoding Settings");
+		encodingMenu.add(entire_encoding);
+		encodingMenu.addSeparator();
+		encodingMenu.add(single_line_encoding);
+		encodingMenu.addSeparator();
+		encodingMenu.add(tune_encoding);
+		
+		entire_encoding.addActionListener(cf.createCommand("_tuneAudio"));
+		single_line_encoding.addActionListener(cf.createCommand("_tuneAudio"));
+		tune_encoding.addActionListener(cf.createCommand("_tuneAudio"));
+		
+		//Complete the following in sprint 2 
+//		blank_menu_1=new JMenu("    			");
+//		blank_menu_1.disable();
+//		blank_menu_2=new JMenu("    			");
+//		blank_menu_2.disable();
+//		blank_menu_3=new JMenu("    			");
+//		blank_menu_3.disable();
+//		blank_menu_4=new JMenu("    			");
+//		blank_menu_4.disable();
+//		blank_menu_5=new JMenu("    			");
+//		blank_menu_5.disable();
+//		
+//		action_menu_bar.add(blank_menu_1);
+//		action_menu_bar.add(blank_menu_2);
+//	    action_menu_bar.add(blank_menu_3);
+//	    action_menu_bar.add(blank_menu_4);
+//	    action_menu_bar.add(blank_menu_5);
 	    
 	    action_menu_bar.revalidate();
 	    editorFrame.setJMenuBar(action_menu_bar);
@@ -148,7 +178,9 @@ public class EditorView {
 			fileName="";
 			//create new Document 
 			Doc =new Document(fileAuthor,fileTitle,fileName);
-			
+			//enable edit button
+			isOpenFile=true;
+
 			Doc.createNewEmptyDocument(Doc);
 			
 		}
@@ -185,12 +217,81 @@ public class EditorView {
 			//System.out.print(openedFile.getName());
 			if(openedFile!=null) {
 				System.out.println("Opening file succesfully");
+				//enable edit button
+				isOpenFile=true;
 				Doc3.openDocument(openedFile,Doc3);
 				
 			}
 		}
 		
 	}
+	
+	
+	//creates the audio pop up window
+	public void createAudioPopUp() {
+		Document doc=new Document();
+		JPanel myPanel=new JPanel();
+		
+		JSlider volumeSlider=new JSlider(0,10);
+		JSlider pitchSlider=new JSlider(0,100);
+		JSlider rateSlider=new JSlider(0,150);
+		
+		volumeSlider.setPaintLabels(true);
+		pitchSlider.setPaintLabels(true);
+		rateSlider.setPaintLabels(true);
+		
+		//get the current volume rate and pitch
+		volumeSlider.setValue(doc.getVolume());
+		pitchSlider.setValue(doc.getPitch());
+		rateSlider.setValue(doc.getRate());
+		
+		myPanel.add(new JLabel("Volume:"));
+		myPanel.add(volumeSlider);
+		myPanel.add(new JLabel("Pitch"));
+		myPanel.add(pitchSlider);
+		myPanel.add(new JLabel("Rate"));
+		myPanel.add(rateSlider);
+		
+		int option= JOptionPane.showConfirmDialog(null,myPanel,"Audio Settings",JOptionPane.OK_CANCEL_OPTION);
+		if(option==JOptionPane.OK_OPTION) {
+			System.out.println(volumeSlider.getValue());
+			doc.setVolume(volumeSlider.getValue());
+			doc.setPitch(pitchSlider.getValue());
+			doc.setRate(rateSlider.getValue());
+		}
+	}
+	//creates the popup window for the encoding method decision
+	public void createEncodingPopUp() {
+		JPanel myPanel=new JPanel();
+		Document doc=new Document();
+		JRadioButton rot_13=new JRadioButton("Rot-13");
+		JRadioButton atbash=new JRadioButton("Atbash");
+	
+		if(doc.getEncodingMethod().equals("Rot-13")) {
+			rot_13.setSelected(true);
+		}
+		else {
+			atbash.setSelected(true);
+		}
+		ButtonGroup bgroup=new ButtonGroup();
+		bgroup.add(rot_13);
+		bgroup.add(atbash);
+		
+		
+		myPanel.add(rot_13);
+		myPanel.add(atbash);
+		
+		int option= JOptionPane.showConfirmDialog(null,myPanel,"Audio Settings",JOptionPane.OK_CANCEL_OPTION);
+		if(option==JOptionPane.OK_OPTION) {
+			if(rot_13.isSelected()) {
+				doc.setEncodingMethod("Rot-13");
+			}
+			else {
+				doc.setEncodingMethod("Atbash");
+			}
+		}
+	}
+	
 	public void setTextArea(String text) {
 		text_file_input.setEditable(true);
 		text_file_input.setText(text);
@@ -204,12 +305,20 @@ public class EditorView {
 		ev.createEditorViewMenu();
 		ev.createEditorViewTextArea();
 	}
-	
+	//returns whole text of the document
 	public String getEditorText() {
 		return text_file_input.getText();
 	}
-	
+	//returns only the selected line of the document
 	public String getEditorSelectedLine() {
 		return text_file_input.getSelectedText();
 	}
+	
+	public boolean getIsOpenFile() {
+		return isOpenFile;
+	}
+	public void setIsOpenFile(boolean res) {
+		isOpenFile=res;
+	}
+	
 }
