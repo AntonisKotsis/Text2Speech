@@ -21,6 +21,10 @@ public class Document {
 	//the following bool is true only if it's the first time user creates or opens a file 
 	public static boolean first_time_save=true;
 	
+	//following vars are responsible for the audio tuning
+	private static int volume=1,pitch=100,rate=150;
+	
+	private static String encoding_method="Rot-13";
 	
 	public Document(String author,String title,String filename) {
 		this.author=author;
@@ -60,7 +64,7 @@ public class Document {
 		try {
 			File file=new File(documents.get(0).filename);
 			FileWriter Fwriter=new FileWriter(file,true);
-			Fwriter.write(ev.text_file_input.getText());
+			Fwriter.write(ev.getEditorText());
 			Fwriter.close();
 		    
 		}catch (Exception e) {
@@ -76,7 +80,7 @@ public class Document {
 		try {
 			File file=new File(documents.get(0).filename);
 			FileWriter Fwriter=new FileWriter(file);
-			Fwriter.write(ev.text_file_input.getText());
+			Fwriter.write(ev.getEditorText());
 			Fwriter.close();
 		}catch (Exception e) {
 			System.out.println("Exception happened in save");
@@ -113,9 +117,16 @@ public class Document {
 		System.out.println(docContent);
 		System.setProperty("freetts.voices", "com.sun.speech.freetts.en.us.cmu_us_kal.KevinVoiceDirectory");
 	    Voice voice =VoiceManager.getInstance().getVoice("kevin16");
-	    if (voice != null) {
+	    if (voice != null && docContent!=null) {
 	             voice.allocate();//Allocating Voice
+	             voice.setRate(rate);
+	             voice.setPitch(pitch);
+	             voice.setVolume(volume);
 	             voice.speak(docContent);
+	             System.out.println(voice.getRate()+" Rate");
+	             System.out.println(voice.getPitch()+" Pitch");
+	             System.out.println(voice.getVolume()+" Volume");
+
 	             voice.deallocate();
 	    }
 	}
@@ -124,8 +135,11 @@ public class Document {
 		String lineContent=ev.getEditorSelectedLine();
 		System.setProperty("freetts.voices", "com.sun.speech.freetts.en.us.cmu_us_kal.KevinVoiceDirectory");
 	    Voice voice =VoiceManager.getInstance().getVoice("kevin16");
-	    if (voice != null) {
+	    if (voice != null && lineContent!=null) {
 	             voice.allocate();//Allocating Voice
+	             voice.setRate(rate);
+	             voice.setPitch(pitch);
+	             voice.setVolume(volume);
 	             voice.speak(lineContent);
 	             voice.deallocate();
 	    }
@@ -140,6 +154,9 @@ public class Document {
 	    Voice voice =VoiceManager.getInstance().getVoice("kevin16");
 	    if (voice != null) {
 	             voice.allocate();//Allocating Voice
+	             voice.setRate(rate);
+	             voice.setPitch(pitch);
+	             voice.setVolume(volume);
 	             voice.speak(reversedContent);
 	             voice.deallocate();
 	    }
@@ -153,11 +170,45 @@ public class Document {
 	    Voice voice =VoiceManager.getInstance().getVoice("kevin16");
 	    if (voice != null) {
 	             voice.allocate();//Allocating Voice
+	             voice.setRate(rate);
+	             voice.setPitch(pitch);
+	             voice.setVolume(volume);
 	             voice.speak(reversedContent);
 	             voice.deallocate();
 	    }
 	}
 	
+	public void playEncodedContent() {
+		String normalContent =ev.getEditorText();
+		String encodedContent=CreateEncoding(normalContent);
+		System.setProperty("freetts.voices", "com.sun.speech.freetts.en.us.cmu_us_kal.KevinVoiceDirectory");
+	    Voice voice =VoiceManager.getInstance().getVoice("kevin16");
+	    
+	    if (voice != null) {
+	             voice.allocate();//Allocating Voice
+	             voice.setRate(rate);
+	             voice.setPitch(pitch);
+	             voice.setVolume(volume);
+	             voice.speak(encodedContent);
+	             voice.deallocate();
+	    }
+		
+	}
+	public void playEncodedLine() {
+		String lineContent=ev.getEditorSelectedLine();
+		String encodedLineContent=CreateEncoding(lineContent);
+		System.setProperty("freetts.voices", "com.sun.speech.freetts.en.us.cmu_us_kal.KevinVoiceDirectory");
+	    Voice voice =VoiceManager.getInstance().getVoice("kevin16");
+	    if (voice != null) {
+	             voice.allocate();//Allocating Voice
+	             voice.setRate(rate);
+	             voice.setPitch(pitch);
+	             voice.setVolume(volume);
+	             voice.speak(encodedLineContent);
+	             voice.deallocate();
+	    }
+		
+	}
 	
 	//creates the reverse text
 	//we can use it for the lines too
@@ -181,10 +232,116 @@ public class Document {
 		return sb.toString();
 	}
 	
+	public String CreateEncoding(String TextOrLine) {
+		String cipher_text="";
+		
+		if(encoding_method.equals("Rot-13")) {
+			cipher_text=rot13(TextOrLine);
+			System.out.println(cipher_text);
+
+		}
+		else {
+			cipher_text=atbash(TextOrLine);
+			System.out.println(cipher_text);
+		}
+		return cipher_text;
+		
+	}
+	
+	private String atbash (String textToEncode) {
+		String allchar = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+		
+		textToEncode=textToEncode.replaceAll(" ", "");
+		textToEncode=textToEncode.toUpperCase();
+		
+		String cipher="";
+		int len=textToEncode.length();
+		int alphabetLen=allchar.length();
+		for(int i=0; i<len; i++)
+        {
+            char b=textToEncode.charAt(i);
+            for(int j=0; j<alphabetLen; j++)
+            {
+                char c=allchar.charAt(j);
+                if(c == b)
+                {
+                	int index=allchar.indexOf(c);
+                	int position=(alphabetLen-1)-index;
+                    cipher+= allchar.charAt(position);
+                    break;
+                      
+                }          
+            }
+        }
+		System.out.println("cipher:"+cipher);
+		return cipher;
+	}
+	
+    private  String rot13(String value) {
+
+        char[] values = value.toCharArray();
+        for (int i = 0; i < values.length; i++) {
+            char letter = values[i];
+
+            if (letter >= 'a' && letter <= 'z') {
+                // Rotate lowercase letters.
+
+                if (letter > 'm') {
+                    letter -= 13;
+                } else {
+                    letter += 13;
+                }
+            } else if (letter >= 'A' && letter <= 'Z') {
+                // Rotate uppercase letters.
+
+                if (letter > 'M') {
+                    letter -= 13;
+                } else {
+                    letter += 13;
+                }
+            }
+            values[i] = letter;
+        }
+        // Convert array to a new String.
+        return new String(values);
+    }
+	
 	//clears the documents list
 	public void emptyList() {
 		documents.clear();
 	}
-
 	
+	
+	public void setVolume(int sliderVolumeValue) {
+		//devide volume with 10 cause TTS volume  has values in range 0.0-1.0
+		volume=sliderVolumeValue;
+		System.out.println("Volume is ="+volume);
+	}
+	public int getVolume() {
+		return volume;
+	}
+
+	public void setRate(int sliderRateValue) {
+		rate=sliderRateValue;
+		System.out.println("Rate is ="+rate);
+	}
+	public int getRate() {
+		return rate;
+	}
+	
+	public void setPitch(int sliderPitchValue) {
+		pitch=sliderPitchValue;
+		System.out.println("Pitch is ="+pitch);
+	}
+	public int getPitch() {
+		return pitch;
+	}
+	
+	public void setEncodingMethod(String encodingMethod) {
+		encoding_method=encodingMethod;
+		System.out.println("Method="+encoding_method);
+	}
+	public String getEncodingMethod() {
+		return encoding_method;
+	}
 }

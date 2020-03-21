@@ -19,8 +19,8 @@ public class newDocument implements ActionListener {
 		// TODO Auto-generated method stub
 		doc.first_time_save=true;
 		EditorView ed=new EditorView();	
-		ed.createNewFilePopUpFrame();
 		
+		ed.createNewFilePopUpFrame();
 	}
 
 }

@@ -26,7 +26,10 @@ public class CommandsFactory {
 			return new DocumentToSpeech();
 		case "_revline2text":
 			return new LineToSpeech();
-		
+		case "_audioSettings" :
+			return new TuneAudio();
+		case "_tuneAudio":
+			return new tuneEncoding();
 		default:
 			return new exitDocument();
 		}
