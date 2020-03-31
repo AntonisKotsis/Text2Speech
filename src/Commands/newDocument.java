@@ -17,7 +17,8 @@ public class newDocument implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		// TODO Auto-generated method stub
-		doc.first_time_save=true;
+//		doc.first_time_save=true;
+		doc.setFirstTimeSave(true);
 		EditorView ed=new EditorView();	
 		
 		ed.createNewFilePopUpFrame();
