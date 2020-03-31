@@ -12,7 +12,8 @@ public class openDocument implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		// TODO Auto-generated method stub
-		doc.first_time_save=false;
+//		doc.first_time_save=false;
+		doc.setFirstTimeSave(false);
 		EditorView ed=new EditorView();
 		try {
 			ed.createFileBrowser();

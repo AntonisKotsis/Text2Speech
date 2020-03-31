@@ -11,7 +11,7 @@ public class saveDocument implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		// TODO Auto-generated method stub
-		if(doc.first_time_save) {
+		if(doc.getFirstTimeSave()) {
 			//this is the first time user tries to save the document so we have to ask the name of the file
 			EditorView ed=new EditorView();
 			ed.createSaveFilePopUpFrame();

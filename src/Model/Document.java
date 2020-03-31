@@ -19,11 +19,12 @@ public class Document {
 	private static ArrayList<Document>documents=new ArrayList<Document>();
 	EditorView ev=new EditorView();
 	//the following bool is true only if it's the first time user creates or opens a file 
-	public static boolean first_time_save=true;
+	private static boolean first_time_save=true;
 	
 	//following vars are responsible for the audio tuning
 	private static int volume=1,pitch=100,rate=150;
-	
+	private static float volume_=(float) 10.0;
+	//default encoding method is Rot-13
 	private static String encoding_method="Rot-13";
 	
 	public Document(String author,String title,String filename) {
@@ -43,21 +44,26 @@ public class Document {
 	   
 	}
 	
-	public void editDocument(Document doc) {
+	public boolean editDocument(Document doc) {
+		boolean editedDoc=false;
 		try {
 			//System.out.println(ev.getEditorText());
 			File file=new File(doc.filename);
 			FileWriter Fwriter=new FileWriter(file);
 			Fwriter.write(ev.text_file_input.getText());
 			Fwriter.close();
+			editedDoc=true;
 		} catch (Exception e) {
 			System.out.println("Exception happened in edit");
 			e.printStackTrace();
 		}
+		
+		return editedDoc;
 	}
 	
 	
-	public void saveNewDocument(String newfilename) {
+	public boolean saveNewDocument(String newfilename) {
+		boolean savedDoc=false;
 		documents.get(0).filename=newfilename;
 		//get the save date
 		documents.get(0).saveDate=new Date();
@@ -66,12 +72,14 @@ public class Document {
 			FileWriter Fwriter=new FileWriter(file,true);
 			Fwriter.write(ev.getEditorText());
 			Fwriter.close();
+			savedDoc=true;
 		    
 		}catch (Exception e) {
 			System.out.println("Exception happened in save");
 			e.printStackTrace();
 
 		}	
+		return savedDoc;
 		
 	}
 	public void saveExistedDocument() {
@@ -91,10 +99,12 @@ public class Document {
 	}
 	
 	
-	public void openDocument(File openFile,Document doc) throws FileNotFoundException  {
+	public boolean openDocument(File openFile,Document doc) throws FileNotFoundException  {
+		boolean openedFile=false;
 		documents.clear();//clear the current list we want to process only one doc
 		documents.add(doc);
 		Scanner in =new Scanner(openFile);
+		openedFile=true;
 		StringBuilder sb=new StringBuilder();
 		EditorView ev=new EditorView();
 		while(in.hasNext()) {
@@ -107,13 +117,15 @@ public class Document {
 		//we changed the content of the editor using this string builder
 		ev.setTextArea(sb.toString());
 		in.close();
+		return openedFile;
 
 	}
 	//converts document to speech
-	public void playContent() {
+	public boolean playContent(String content) {
 		//in the following string we store the content of the document which
 		//is currently open
-		String docContent=ev.getEditorText();
+		boolean speechCompleted=false;
+		String docContent=content;//ev.getEditorText();
 		System.out.println(docContent);
 		System.setProperty("freetts.voices", "com.sun.speech.freetts.en.us.cmu_us_kal.KevinVoiceDirectory");
 	    Voice voice =VoiceManager.getInstance().getVoice("kevin16");
@@ -121,34 +133,39 @@ public class Document {
 	             voice.allocate();//Allocating Voice
 	             voice.setRate(rate);
 	             voice.setPitch(pitch);
-	             voice.setVolume(volume);
+	             voice.setVolume(volume_);
 	             voice.speak(docContent);
-	             System.out.println(voice.getRate()+" Rate");
-	             System.out.println(voice.getPitch()+" Pitch");
-	             System.out.println(voice.getVolume()+" Volume");
-
+//	             System.out.println(voice.getRate()+" Rate");
+//	             System.out.println(voice.getPitch()+" Pitch");
+//	             System.out.println(voice.getVolume()+" Volume");
 	             voice.deallocate();
+	             speechCompleted=true;
 	    }
+	    return speechCompleted;
 	}
 	//converts line to speech
-	public void playLine() {
-		String lineContent=ev.getEditorSelectedLine();
+	public boolean playLine(String content) {
+		boolean speechCompleted=false;
+		String lineContent=content;//ev.getEditorSelectedLine();
 		System.setProperty("freetts.voices", "com.sun.speech.freetts.en.us.cmu_us_kal.KevinVoiceDirectory");
 	    Voice voice =VoiceManager.getInstance().getVoice("kevin16");
 	    if (voice != null && lineContent!=null) {
 	             voice.allocate();//Allocating Voice
 	             voice.setRate(rate);
 	             voice.setPitch(pitch);
-	             voice.setVolume(volume);
+	             voice.setVolume(volume_);
 	             voice.speak(lineContent);
 	             voice.deallocate();
+	             speechCompleted=true;
 	    }
 	    System.out.println(lineContent);
+	    return speechCompleted;
 	}
 	
 	//converts reverse content to speech
-	public void playReversedContent() {
-		String normalContent=ev.getEditorText();
+	public boolean playReversedContent(String content) {
+		boolean speechCompleted=false;
+		String normalContent=content;//ev.getEditorText();
 		String reversedContent=createReverseContent(normalContent);
 		System.setProperty("freetts.voices", "com.sun.speech.freetts.en.us.cmu_us_kal.KevinVoiceDirectory");
 	    Voice voice =VoiceManager.getInstance().getVoice("kevin16");
@@ -156,30 +173,40 @@ public class Document {
 	             voice.allocate();//Allocating Voice
 	             voice.setRate(rate);
 	             voice.setPitch(pitch);
-	             voice.setVolume(volume);
+	             voice.setVolume(volume_);
 	             voice.speak(reversedContent);
 	             voice.deallocate();
+	             speechCompleted=true;
 	    }
+	    return speechCompleted;
 	}
 	
 	//converts reverse line to speech
-	public void playReversedLine() {
-		String lineContent=ev.getEditorSelectedLine();
-		String reversedContent=createReverseContent(lineContent);
+	public boolean playReversedLine(String content) {
+		boolean speechCompleted=false;
+		String lineContent=content;//ev.getEditorSelectedLine();
+		String reversedContent=null;
+		if(lineContent!=null) {
+			reversedContent=createReverseContent(lineContent);
+		}
+		
 		System.setProperty("freetts.voices", "com.sun.speech.freetts.en.us.cmu_us_kal.KevinVoiceDirectory");
 	    Voice voice =VoiceManager.getInstance().getVoice("kevin16");
-	    if (voice != null) {
+	    if (voice != null && reversedContent!=null) {
 	             voice.allocate();//Allocating Voice
 	             voice.setRate(rate);
 	             voice.setPitch(pitch);
-	             voice.setVolume(volume);
+	             voice.setVolume(volume_);
 	             voice.speak(reversedContent);
 	             voice.deallocate();
+	             speechCompleted=true;
 	    }
+	    return speechCompleted;
 	}
 	
-	public void playEncodedContent() {
-		String normalContent =ev.getEditorText();
+	public boolean playEncodedContent(String content) {
+		boolean speechCompleted=false;
+		String normalContent =content;//ev.getEditorText();
 		String encodedContent=CreateEncoding(normalContent);
 		System.setProperty("freetts.voices", "com.sun.speech.freetts.en.us.cmu_us_kal.KevinVoiceDirectory");
 	    Voice voice =VoiceManager.getInstance().getVoice("kevin16");
@@ -188,31 +215,39 @@ public class Document {
 	             voice.allocate();//Allocating Voice
 	             voice.setRate(rate);
 	             voice.setPitch(pitch);
-	             voice.setVolume(volume);
+	             voice.setVolume(volume_);
 	             voice.speak(encodedContent);
 	             voice.deallocate();
+	             speechCompleted=true;
 	    }
+	    return speechCompleted;
 		
 	}
-	public void playEncodedLine() {
-		String lineContent=ev.getEditorSelectedLine();
-		String encodedLineContent=CreateEncoding(lineContent);
+	public boolean playEncodedLine(String content) {
+		boolean speechCompleted=false;
+		String lineContent=content;//ev.getEditorSelectedLine();
+		String encodedLineContent=null;
+		if(lineContent!=null) {
+			encodedLineContent=CreateEncoding(lineContent);
+		}
+		
 		System.setProperty("freetts.voices", "com.sun.speech.freetts.en.us.cmu_us_kal.KevinVoiceDirectory");
 	    Voice voice =VoiceManager.getInstance().getVoice("kevin16");
-	    if (voice != null) {
+	    if (voice != null && encodedLineContent!=null) {
 	             voice.allocate();//Allocating Voice
 	             voice.setRate(rate);
 	             voice.setPitch(pitch);
-	             voice.setVolume(volume);
+	             voice.setVolume(volume_);
 	             voice.speak(encodedLineContent);
 	             voice.deallocate();
+	             speechCompleted=true;
 	    }
-		
+		return speechCompleted;
 	}
 	
 	//creates the reverse text
 	//we can use it for the lines too
-	private String createReverseContent(String text) {
+	public String createReverseContent(String text) {
 		StringBuilder sb=new StringBuilder();
 		//replace all new lines ('\n') with spaces
 		String replaceNewLines=text.replaceAll("[\\t\\n\\r]+"," ");
@@ -229,6 +264,7 @@ public class Document {
 			//System.out.println(reverseContentTokens[k]);
 			sb.append(reverseContentTokens[k]).append(" ");
 		}
+		//System.out.println(sb.toString());
 		return sb.toString();
 	}
 	
@@ -248,7 +284,7 @@ public class Document {
 		
 	}
 	
-	private String atbash (String textToEncode) {
+	public String atbash (String textToEncode) {
 		String allchar = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 		
 		textToEncode=textToEncode.replaceAll(" ", "");
@@ -277,7 +313,7 @@ public class Document {
 		return cipher;
 	}
 	
-    private  String rot13(String value) {
+    public  String rot13(String value) {
 
         char[] values = value.toCharArray();
         for (int i = 0; i < values.length; i++) {
@@ -314,11 +350,14 @@ public class Document {
 	
 	public void setVolume(int sliderVolumeValue) {
 		//devide volume with 10 cause TTS volume  has values in range 0.0-1.0
-		volume=sliderVolumeValue;
-		System.out.println("Volume is ="+volume);
+		//volume=sliderVolumeValue;
+		volume_=(float)sliderVolumeValue/10;
+		System.out.println("Volume is f="+volume_);
 	}
 	public int getVolume() {
-		return volume;
+		float vol=volume_*10;
+		System.out.println("Vol="+(int)vol);
+		return (int)vol;
 	}
 
 	public void setRate(int sliderRateValue) {
@@ -343,5 +382,17 @@ public class Document {
 	}
 	public String getEncodingMethod() {
 		return encoding_method;
+	}
+	
+	public void setFirstTimeSave(boolean res) {
+		first_time_save=res;
+	}
+	
+	public boolean getFirstTimeSave() {
+		return first_time_save;
+	}
+	
+	public void addToDocList(Document doc) {
+		documents.add(doc);
 	}
 }

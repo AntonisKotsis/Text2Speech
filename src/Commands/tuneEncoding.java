@@ -12,15 +12,16 @@ public class tuneEncoding implements ActionListener {
 	public void actionPerformed(ActionEvent arg0) {
 		// TODO Auto-generated method stub
 		Document doc =new Document();
+		EditorView ev=new EditorView();
 		if(arg0.getActionCommand().equals("Entire File")) {
 			//doc.setEncodingMethod(arg0.getActionCommand());
 			//doc.TuneEncoding();
-			doc.playEncodedContent();
+			doc.playEncodedContent(ev.getEditorText());
 		}
 		else if(arg0.getActionCommand().equals("Single Line")) {
 			//doc.setEncodingMethod(arg0.getActionCommand());
 			//doc.TuneEncoding();
-			doc.playEncodedLine();
+			doc.playEncodedLine(ev.getEditorSelectedLine());
 		}
 		else {
 			EditorView ed=new EditorView();

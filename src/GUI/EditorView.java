@@ -100,14 +100,6 @@ public class EditorView {
 		whole_text_opt_rev.addActionListener(cf.createCommand("_revdoc2text"));
 		line_opt_rev.addActionListener(cf.createCommand("_revline2text"));
 		
-		
-		//***Audio Menu
-		audioMenu=new JMenu("Audio");
-		action_menu_bar.add(audioMenu);
-		JMenuItem audioSettings=new JMenuItem("Audio Settings");
-		audioMenu.add(audioSettings);
-		audioSettings.addActionListener(cf.createCommand("_audioSettings"));
-		
 		//***Encoding Menu
 		encodingMenu=new JMenu("Encode");
 		action_menu_bar.add(encodingMenu);
@@ -123,6 +115,15 @@ public class EditorView {
 		entire_encoding.addActionListener(cf.createCommand("_tuneAudio"));
 		single_line_encoding.addActionListener(cf.createCommand("_tuneAudio"));
 		tune_encoding.addActionListener(cf.createCommand("_tuneAudio"));
+		
+		//***Audio Menu
+		audioMenu=new JMenu("Settings");
+		action_menu_bar.add(audioMenu);
+		JMenuItem audioSettings=new JMenuItem("Audio Settings");
+		audioMenu.add(audioSettings);
+		audioSettings.addActionListener(cf.createCommand("_audioSettings"));
+		
+
 		
 		//Complete the following in sprint 2 
 //		blank_menu_1=new JMenu("    			");
@@ -180,7 +181,6 @@ public class EditorView {
 			Doc =new Document(fileAuthor,fileTitle,fileName);
 			//enable edit button
 			isOpenFile=true;
-
 			Doc.createNewEmptyDocument(Doc);
 			
 		}
@@ -201,8 +201,10 @@ public class EditorView {
 			fileName=filenameField.getText();
 			
 			Doc2.saveNewDocument(fileName);
-			Doc2.first_time_save=false;
+			//Doc2.first_time_save=false;
+			Doc2.setFirstTimeSave(false);
 		}
+		
 	
 	}
 	
@@ -254,7 +256,7 @@ public class EditorView {
 		
 		int option= JOptionPane.showConfirmDialog(null,myPanel,"Audio Settings",JOptionPane.OK_CANCEL_OPTION);
 		if(option==JOptionPane.OK_OPTION) {
-			System.out.println(volumeSlider.getValue());
+			System.out.println("Volume is="+volumeSlider.getValue());
 			doc.setVolume(volumeSlider.getValue());
 			doc.setPitch(pitchSlider.getValue());
 			doc.setRate(rateSlider.getValue());

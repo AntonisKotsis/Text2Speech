@@ -3,6 +3,7 @@ package Commands;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import GUI.EditorView;
 import Model.Document;
 
 public class DocumentToSpeech implements ActionListener {
@@ -11,12 +12,13 @@ public class DocumentToSpeech implements ActionListener {
 	public void actionPerformed(ActionEvent arg0) {
 		// TODO Auto-generated method stub
 		Document doc =new Document();
+		EditorView ev=new EditorView();
 		System.out.println(arg0.getActionCommand());
 		if(arg0.getActionCommand().equals("Entire File")) {
-			doc.playContent();
+			doc.playContent(ev.getEditorText());
 		}
 		else {
-			doc.playReversedContent();
+			doc.playReversedContent(ev.getEditorText());
 		}
 		
 		
