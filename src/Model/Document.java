@@ -11,6 +11,9 @@ import com.sun.speech.freetts.*;
 //import com.sun.speech.freetts.VoiceManager;
 
 import GUI.EditorView;
+import TextToSpeechAPI.*;
+import encodingStrategies.StrategiesFactory;
+import encodingStrategies.encodingStrategy;
 
 public class Document {
 
@@ -26,6 +29,9 @@ public class Document {
 	private static float volume_=(float) 10.0;
 	//default encoding method is Rot-13
 	private static String encoding_method="Rot-13";
+	
+	private Text2SpeechAPIFactory apiFact=new Text2SpeechAPIFactory();
+	private StrategiesFactory strat =new StrategiesFactory();
 	
 	public Document(String author,String title,String filename) {
 		this.author=author;
@@ -126,39 +132,49 @@ public class Document {
 		//is currently open
 		boolean speechCompleted=false;
 		String docContent=content;//ev.getEditorText();
-		System.out.println(docContent);
-		System.setProperty("freetts.voices", "com.sun.speech.freetts.en.us.cmu_us_kal.KevinVoiceDirectory");
-	    Voice voice =VoiceManager.getInstance().getVoice("kevin16");
-	    if (voice != null && docContent!=null) {
-	             voice.allocate();//Allocating Voice
-	             voice.setRate(rate);
-	             voice.setPitch(pitch);
-	             voice.setVolume(volume_);
-	             voice.speak(docContent);
-//	             System.out.println(voice.getRate()+" Rate");
-//	             System.out.println(voice.getPitch()+" Pitch");
-//	             System.out.println(voice.getVolume()+" Volume");
-	             voice.deallocate();
-	             speechCompleted=true;
-	    }
+		Text2SpeechAPI apiInter=apiFact.createTTSAPI("");
+		apiInter.setPitch(pitch);
+		apiInter.setRate(rate);
+		apiInter.setVolume(volume_);
+		apiInter.play(docContent);
+		
+//		System.setProperty("freetts.voices", "com.sun.speech.freetts.en.us.cmu_us_kal.KevinVoiceDirectory");
+//	    Voice voice =VoiceManager.getInstance().getVoice("kevin16");
+//	    if (voice != null && docContent!=null) {
+//	             voice.allocate();//Allocating Voice
+//	             voice.setRate(rate);
+//	             voice.setPitch(pitch);
+//	             voice.setVolume(volume_);
+//	             voice.speak(docContent);
+////	             System.out.println(voice.getRate()+" Rate");
+////	             System.out.println(voice.getPitch()+" Pitch");
+////	             System.out.println(voice.getVolume()+" Volume");
+//	             voice.deallocate();
+//	             speechCompleted=true;
+//	    }
 	    return speechCompleted;
 	}
 	//converts line to speech
 	public boolean playLine(String content) {
 		boolean speechCompleted=false;
 		String lineContent=content;//ev.getEditorSelectedLine();
-		System.setProperty("freetts.voices", "com.sun.speech.freetts.en.us.cmu_us_kal.KevinVoiceDirectory");
-	    Voice voice =VoiceManager.getInstance().getVoice("kevin16");
-	    if (voice != null && lineContent!=null) {
-	             voice.allocate();//Allocating Voice
-	             voice.setRate(rate);
-	             voice.setPitch(pitch);
-	             voice.setVolume(volume_);
-	             voice.speak(lineContent);
-	             voice.deallocate();
-	             speechCompleted=true;
-	    }
-	    System.out.println(lineContent);
+		Text2SpeechAPI apiInter=apiFact.createTTSAPI("");
+		apiInter.setPitch(pitch);
+		apiInter.setRate(rate);
+		apiInter.setVolume(volume_);
+		apiInter.play(lineContent);
+//		System.setProperty("freetts.voices", "com.sun.speech.freetts.en.us.cmu_us_kal.KevinVoiceDirectory");
+//	    Voice voice =VoiceManager.getInstance().getVoice("kevin16");
+//	    if (voice != null && lineContent!=null) {
+//	             voice.allocate();//Allocating Voice
+//	             voice.setRate(rate);
+//	             voice.setPitch(pitch);
+//	             voice.setVolume(volume_);
+//	             voice.speak(lineContent);
+//	             voice.deallocate();
+//	             speechCompleted=true;
+//	    }
+//	    System.out.println(lineContent);
 	    return speechCompleted;
 	}
 	
@@ -167,17 +183,22 @@ public class Document {
 		boolean speechCompleted=false;
 		String normalContent=content;//ev.getEditorText();
 		String reversedContent=createReverseContent(normalContent);
-		System.setProperty("freetts.voices", "com.sun.speech.freetts.en.us.cmu_us_kal.KevinVoiceDirectory");
-	    Voice voice =VoiceManager.getInstance().getVoice("kevin16");
-	    if (voice != null) {
-	             voice.allocate();//Allocating Voice
-	             voice.setRate(rate);
-	             voice.setPitch(pitch);
-	             voice.setVolume(volume_);
-	             voice.speak(reversedContent);
-	             voice.deallocate();
-	             speechCompleted=true;
-	    }
+		Text2SpeechAPI apiInter=apiFact.createTTSAPI("");
+		apiInter.setPitch(pitch);
+		apiInter.setRate(rate);
+		apiInter.setVolume(volume_);
+		apiInter.play(reversedContent);
+//		System.setProperty("freetts.voices", "com.sun.speech.freetts.en.us.cmu_us_kal.KevinVoiceDirectory");
+//	    Voice voice =VoiceManager.getInstance().getVoice("kevin16");
+//	    if (voice != null) {
+//	             voice.allocate();//Allocating Voice
+//	             voice.setRate(rate);
+//	             voice.setPitch(pitch);
+//	             voice.setVolume(volume_);
+//	             voice.speak(reversedContent);
+//	             voice.deallocate();
+//	             speechCompleted=true;
+//	    }
 	    return speechCompleted;
 	}
 	
@@ -189,37 +210,52 @@ public class Document {
 		if(lineContent!=null) {
 			reversedContent=createReverseContent(lineContent);
 		}
+		Text2SpeechAPI apiInter=apiFact.createTTSAPI("");
+		apiInter.setPitch(pitch);
+		apiInter.setRate(rate);
+		apiInter.setVolume(volume_);
+		apiInter.play(reversedContent);
 		
-		System.setProperty("freetts.voices", "com.sun.speech.freetts.en.us.cmu_us_kal.KevinVoiceDirectory");
-	    Voice voice =VoiceManager.getInstance().getVoice("kevin16");
-	    if (voice != null && reversedContent!=null) {
-	             voice.allocate();//Allocating Voice
-	             voice.setRate(rate);
-	             voice.setPitch(pitch);
-	             voice.setVolume(volume_);
-	             voice.speak(reversedContent);
-	             voice.deallocate();
-	             speechCompleted=true;
-	    }
+//		System.setProperty("freetts.voices", "com.sun.speech.freetts.en.us.cmu_us_kal.KevinVoiceDirectory");
+//	    Voice voice =VoiceManager.getInstance().getVoice("kevin16");
+//	    if (voice != null && reversedContent!=null) {
+//	             voice.allocate();//Allocating Voice
+//	             voice.setRate(rate);
+//	             voice.setPitch(pitch);
+//	             voice.setVolume(volume_);
+//	             voice.speak(reversedContent);
+//	             voice.deallocate();
+//	             speechCompleted=true;
+//	    }
 	    return speechCompleted;
 	}
 	
 	public boolean playEncodedContent(String content) {
 		boolean speechCompleted=false;
 		String normalContent =content;//ev.getEditorText();
-		String encodedContent=CreateEncoding(normalContent);
-		System.setProperty("freetts.voices", "com.sun.speech.freetts.en.us.cmu_us_kal.KevinVoiceDirectory");
-	    Voice voice =VoiceManager.getInstance().getVoice("kevin16");
+		String encodedContent;
+//		System.setProperty("freetts.voices", "com.sun.speech.freetts.en.us.cmu_us_kal.KevinVoiceDirectory");
+//	    Voice voice =VoiceManager.getInstance().getVoice("kevin16");
 	    
-	    if (voice != null) {
-	             voice.allocate();//Allocating Voice
-	             voice.setRate(rate);
-	             voice.setPitch(pitch);
-	             voice.setVolume(volume_);
-	             voice.speak(encodedContent);
-	             voice.deallocate();
-	             speechCompleted=true;
-	    }
+	    //create the encoded text
+	    
+	    encodingStrategy enc_strat=strat.createStrategy(encoding_method);
+	    encodedContent=enc_strat.encode(normalContent);
+	    Text2SpeechAPI apiInter=apiFact.createTTSAPI("");
+		apiInter.setPitch(pitch);
+		apiInter.setRate(rate);
+		apiInter.setVolume(volume_);
+		apiInter.play(encodedContent);
+	    
+//	    if (voice != null) {
+//	             voice.allocate();//Allocating Voice
+//	             voice.setRate(rate);
+//	             voice.setPitch(pitch);
+//	             voice.setVolume(volume_);
+//	             voice.speak(encodedContent);
+//	             voice.deallocate();
+//	             speechCompleted=true;
+//	    }
 	    return speechCompleted;
 		
 	}
@@ -227,21 +263,26 @@ public class Document {
 		boolean speechCompleted=false;
 		String lineContent=content;//ev.getEditorSelectedLine();
 		String encodedLineContent=null;
+		encodingStrategy enc_strat=strat.createStrategy(encoding_method);
 		if(lineContent!=null) {
-			encodedLineContent=CreateEncoding(lineContent);
+			encodedLineContent=enc_strat.encode(lineContent);
 		}
-		
-		System.setProperty("freetts.voices", "com.sun.speech.freetts.en.us.cmu_us_kal.KevinVoiceDirectory");
-	    Voice voice =VoiceManager.getInstance().getVoice("kevin16");
-	    if (voice != null && encodedLineContent!=null) {
-	             voice.allocate();//Allocating Voice
-	             voice.setRate(rate);
-	             voice.setPitch(pitch);
-	             voice.setVolume(volume_);
-	             voice.speak(encodedLineContent);
-	             voice.deallocate();
-	             speechCompleted=true;
-	    }
+		Text2SpeechAPI apiInter=apiFact.createTTSAPI("");
+		apiInter.setPitch(pitch);
+		apiInter.setRate(rate);
+		apiInter.setVolume(volume_);
+		apiInter.play(encodedLineContent);
+//		System.setProperty("freetts.voices", "com.sun.speech.freetts.en.us.cmu_us_kal.KevinVoiceDirectory");
+//	    Voice voice =VoiceManager.getInstance().getVoice("kevin16");
+//	    if (voice != null && encodedLineContent!=null) {
+//	             voice.allocate();//Allocating Voice
+//	             voice.setRate(rate);
+//	             voice.setPitch(pitch);
+//	             voice.setVolume(volume_);
+//	             voice.speak(encodedLineContent);
+//	             voice.deallocate();
+//	             speechCompleted=true;
+//	    }
 		return speechCompleted;
 	}
 	
@@ -282,6 +323,10 @@ public class Document {
 		}
 		return cipher_text;
 		
+	}
+	
+	public void tuneEncoding(encodingStrategy strat) {
+		//strat.
 	}
 	
 	public String atbash (String textToEncode) {
