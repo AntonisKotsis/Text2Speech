@@ -6,7 +6,7 @@ public class Text2SpeechAPIFactory {
 		switch (tts) {
 		case "fakeTTS":
 			//change the following with fakeTTs
-			return new FreeTTSAdapter();
+			return new FakeTTsAPI();
 
 		default:
 			return new FreeTTSAdapter();

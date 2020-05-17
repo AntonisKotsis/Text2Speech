@@ -13,10 +13,13 @@ class EditDocTest {
 	void test() {
 		EditorView ev=new EditorView();
 		String [] args= {" "," "};
+		String editText="This is a testing phrase";
+		String res;
 		ev.main(args);
-		Document doc =new Document("test","test2","test2");
-		boolean res=doc.editDocument(doc);
-		assertEquals(res,true);
+		ev.createNewFilePopUpFrame();
+		ev.setTextArea(editText);
+		res=ev.getEditorText();
+		assertEquals(res,editText);
 	}
 
 }

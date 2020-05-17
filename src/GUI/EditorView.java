@@ -8,7 +8,7 @@
 package GUI;
 import Commands.*;
 import Model.Document;
-
+import TextToSpeechAPI.FreeTTSAdapter;
 
 import java.awt.GridLayout;
 import java.awt.event.ActionListener;
@@ -69,6 +69,8 @@ public class EditorView {
 	    edit_file_opt.addActionListener(cf.createCommand("_edit"));
 	    exit_file_opt.addActionListener(cf.createCommand("_exit"));
 	    
+	    
+	    
 	    //***Speech Menu
 	    speechMenu = new JMenu("Speech");
 	    action_menu_bar.add(speechMenu);
@@ -125,27 +127,10 @@ public class EditorView {
 		
 
 		
-		//Complete the following in sprint 2 
-//		blank_menu_1=new JMenu("    			");
-//		blank_menu_1.disable();
-//		blank_menu_2=new JMenu("    			");
-//		blank_menu_2.disable();
-//		blank_menu_3=new JMenu("    			");
-//		blank_menu_3.disable();
-//		blank_menu_4=new JMenu("    			");
-//		blank_menu_4.disable();
-//		blank_menu_5=new JMenu("    			");
-//		blank_menu_5.disable();
-//		
-//		action_menu_bar.add(blank_menu_1);
-//		action_menu_bar.add(blank_menu_2);
-//	    action_menu_bar.add(blank_menu_3);
-//	    action_menu_bar.add(blank_menu_4);
-//	    action_menu_bar.add(blank_menu_5);
-	    
+
 	    action_menu_bar.revalidate();
 	    editorFrame.setJMenuBar(action_menu_bar);
-	    editorFrame.setSize(800, 800);
+	    editorFrame.setSize(1000, 1000);
 	    editorFrame.setVisible(true);
 	}
 	
@@ -201,7 +186,6 @@ public class EditorView {
 			fileName=filenameField.getText();
 			
 			Doc2.saveNewDocument(fileName);
-			//Doc2.first_time_save=false;
 			Doc2.setFirstTimeSave(false);
 		}
 		
@@ -232,6 +216,7 @@ public class EditorView {
 	//creates the audio pop up window
 	public void createAudioPopUp() {
 		Document doc=new Document();
+		FreeTTSAdapter ad=new FreeTTSAdapter();
 		JPanel myPanel=new JPanel();
 		
 		JSlider volumeSlider=new JSlider(0,10);
@@ -243,9 +228,10 @@ public class EditorView {
 		rateSlider.setPaintLabels(true);
 		
 		//get the current volume rate and pitch
-		volumeSlider.setValue(doc.getVolume());
-		pitchSlider.setValue(doc.getPitch());
-		rateSlider.setValue(doc.getRate());
+
+		volumeSlider.setValue(ad.getVolume());
+		pitchSlider.setValue(ad.getPitch());
+		rateSlider.setValue(ad.getRate());
 		
 		myPanel.add(new JLabel("Volume:"));
 		myPanel.add(volumeSlider);
@@ -256,10 +242,11 @@ public class EditorView {
 		
 		int option= JOptionPane.showConfirmDialog(null,myPanel,"Audio Settings",JOptionPane.OK_CANCEL_OPTION);
 		if(option==JOptionPane.OK_OPTION) {
-			System.out.println("Volume is="+volumeSlider.getValue());
-			doc.setVolume(volumeSlider.getValue());
-			doc.setPitch(pitchSlider.getValue());
-			doc.setRate(rateSlider.getValue());
+			//System.out.println("Volume is="+volumeSlider.getValue());
+
+			ad.setVolume(volumeSlider.getValue());
+			ad.setPitch(pitchSlider.getValue());
+			ad.setRate(rateSlider.getValue());
 		}
 	}
 	//creates the popup window for the encoding method decision
@@ -283,7 +270,7 @@ public class EditorView {
 		myPanel.add(rot_13);
 		myPanel.add(atbash);
 		
-		int option= JOptionPane.showConfirmDialog(null,myPanel,"Audio Settings",JOptionPane.OK_CANCEL_OPTION);
+		int option= JOptionPane.showConfirmDialog(null,myPanel,"Encoding Strategy",JOptionPane.OK_CANCEL_OPTION);
 		if(option==JOptionPane.OK_OPTION) {
 			if(rot_13.isSelected()) {
 				doc.setEncodingMethod("Rot-13");

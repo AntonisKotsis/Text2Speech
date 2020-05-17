@@ -16,12 +16,12 @@ public class tuneEncoding implements ActionListener {
 		if(arg0.getActionCommand().equals("Entire File")) {
 			//doc.setEncodingMethod(arg0.getActionCommand());
 			//doc.TuneEncoding();
-			doc.playEncodedContent(ev.getEditorText());
+			doc.playEncodedContent(ev.getEditorText(),"FreeTTS");
 		}
 		else if(arg0.getActionCommand().equals("Single Line")) {
 			//doc.setEncodingMethod(arg0.getActionCommand());
 			//doc.TuneEncoding();
-			doc.playEncodedLine(ev.getEditorSelectedLine());
+			doc.playEncodedLine(ev.getEditorSelectedLine(),"FreeTTS");
 		}
 		else {
 			EditorView ed=new EditorView();

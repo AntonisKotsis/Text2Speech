@@ -24,9 +24,7 @@ public class Document {
 	//the following bool is true only if it's the first time user creates or opens a file 
 	private static boolean first_time_save=true;
 	
-	//following vars are responsible for the audio tuning
-	private static int volume=1,pitch=100,rate=150;
-	private static float volume_=(float) 10.0;
+	
 	//default encoding method is Rot-13
 	private static String encoding_method="Rot-13";
 	
@@ -50,26 +48,22 @@ public class Document {
 	   
 	}
 	
-	public boolean editDocument(Document doc) {
-		boolean editedDoc=false;
+	public void editDocument(Document doc) {
 		try {
 			//System.out.println(ev.getEditorText());
 			File file=new File(doc.filename);
 			FileWriter Fwriter=new FileWriter(file);
 			Fwriter.write(ev.text_file_input.getText());
 			Fwriter.close();
-			editedDoc=true;
 		} catch (Exception e) {
 			System.out.println("Exception happened in edit");
 			e.printStackTrace();
 		}
 		
-		return editedDoc;
 	}
 	
 	
-	public boolean saveNewDocument(String newfilename) {
-		boolean savedDoc=false;
+	public void saveNewDocument(String newfilename) {
 		documents.get(0).filename=newfilename;
 		//get the save date
 		documents.get(0).saveDate=new Date();
@@ -78,14 +72,12 @@ public class Document {
 			FileWriter Fwriter=new FileWriter(file,true);
 			Fwriter.write(ev.getEditorText());
 			Fwriter.close();
-			savedDoc=true;
 		    
 		}catch (Exception e) {
 			System.out.println("Exception happened in save");
 			e.printStackTrace();
 
 		}	
-		return savedDoc;
 		
 	}
 	public void saveExistedDocument() {
@@ -105,12 +97,10 @@ public class Document {
 	}
 	
 	
-	public boolean openDocument(File openFile,Document doc) throws FileNotFoundException  {
-		boolean openedFile=false;
+	public void openDocument(File openFile,Document doc) throws FileNotFoundException  {
 		documents.clear();//clear the current list we want to process only one doc
 		documents.add(doc);
 		Scanner in =new Scanner(openFile);
-		openedFile=true;
 		StringBuilder sb=new StringBuilder();
 		EditorView ev=new EditorView();
 		while(in.hasNext()) {
@@ -123,167 +113,67 @@ public class Document {
 		//we changed the content of the editor using this string builder
 		ev.setTextArea(sb.toString());
 		in.close();
-		return openedFile;
 
 	}
 	//converts document to speech
-	public boolean playContent(String content) {
+	public void playContent(String content,String TTSApi) {
 		//in the following string we store the content of the document which
 		//is currently open
-		boolean speechCompleted=false;
 		String docContent=content;//ev.getEditorText();
-		Text2SpeechAPI apiInter=apiFact.createTTSAPI("");
-		apiInter.setPitch(pitch);
-		apiInter.setRate(rate);
-		apiInter.setVolume(volume_);
+		Text2SpeechAPI apiInter=apiFact.createTTSAPI(TTSApi);
 		apiInter.play(docContent);
-		
-//		System.setProperty("freetts.voices", "com.sun.speech.freetts.en.us.cmu_us_kal.KevinVoiceDirectory");
-//	    Voice voice =VoiceManager.getInstance().getVoice("kevin16");
-//	    if (voice != null && docContent!=null) {
-//	             voice.allocate();//Allocating Voice
-//	             voice.setRate(rate);
-//	             voice.setPitch(pitch);
-//	             voice.setVolume(volume_);
-//	             voice.speak(docContent);
-////	             System.out.println(voice.getRate()+" Rate");
-////	             System.out.println(voice.getPitch()+" Pitch");
-////	             System.out.println(voice.getVolume()+" Volume");
-//	             voice.deallocate();
-//	             speechCompleted=true;
-//	    }
-	    return speechCompleted;
+
 	}
 	//converts line to speech
-	public boolean playLine(String content) {
-		boolean speechCompleted=false;
+	public void playLine(String content,String TTSApi) {
 		String lineContent=content;//ev.getEditorSelectedLine();
-		Text2SpeechAPI apiInter=apiFact.createTTSAPI("");
-		apiInter.setPitch(pitch);
-		apiInter.setRate(rate);
-		apiInter.setVolume(volume_);
+		Text2SpeechAPI apiInter=apiFact.createTTSAPI(TTSApi);
 		apiInter.play(lineContent);
-//		System.setProperty("freetts.voices", "com.sun.speech.freetts.en.us.cmu_us_kal.KevinVoiceDirectory");
-//	    Voice voice =VoiceManager.getInstance().getVoice("kevin16");
-//	    if (voice != null && lineContent!=null) {
-//	             voice.allocate();//Allocating Voice
-//	             voice.setRate(rate);
-//	             voice.setPitch(pitch);
-//	             voice.setVolume(volume_);
-//	             voice.speak(lineContent);
-//	             voice.deallocate();
-//	             speechCompleted=true;
-//	    }
-//	    System.out.println(lineContent);
-	    return speechCompleted;
+
 	}
 	
 	//converts reverse content to speech
-	public boolean playReversedContent(String content) {
-		boolean speechCompleted=false;
+	public void playReversedContent(String content,String TTSApi) {
 		String normalContent=content;//ev.getEditorText();
 		String reversedContent=createReverseContent(normalContent);
-		Text2SpeechAPI apiInter=apiFact.createTTSAPI("");
-		apiInter.setPitch(pitch);
-		apiInter.setRate(rate);
-		apiInter.setVolume(volume_);
+		Text2SpeechAPI apiInter=apiFact.createTTSAPI(TTSApi);
 		apiInter.play(reversedContent);
-//		System.setProperty("freetts.voices", "com.sun.speech.freetts.en.us.cmu_us_kal.KevinVoiceDirectory");
-//	    Voice voice =VoiceManager.getInstance().getVoice("kevin16");
-//	    if (voice != null) {
-//	             voice.allocate();//Allocating Voice
-//	             voice.setRate(rate);
-//	             voice.setPitch(pitch);
-//	             voice.setVolume(volume_);
-//	             voice.speak(reversedContent);
-//	             voice.deallocate();
-//	             speechCompleted=true;
-//	    }
-	    return speechCompleted;
+
 	}
 	
 	//converts reverse line to speech
-	public boolean playReversedLine(String content) {
-		boolean speechCompleted=false;
-		String lineContent=content;//ev.getEditorSelectedLine();
+	public void playReversedLine(String content,String TTSApi) {
+		String lineContent=content;
 		String reversedContent=null;
 		if(lineContent!=null) {
 			reversedContent=createReverseContent(lineContent);
 		}
-		Text2SpeechAPI apiInter=apiFact.createTTSAPI("");
-		apiInter.setPitch(pitch);
-		apiInter.setRate(rate);
-		apiInter.setVolume(volume_);
+		Text2SpeechAPI apiInter=apiFact.createTTSAPI(TTSApi);
 		apiInter.play(reversedContent);
-		
-//		System.setProperty("freetts.voices", "com.sun.speech.freetts.en.us.cmu_us_kal.KevinVoiceDirectory");
-//	    Voice voice =VoiceManager.getInstance().getVoice("kevin16");
-//	    if (voice != null && reversedContent!=null) {
-//	             voice.allocate();//Allocating Voice
-//	             voice.setRate(rate);
-//	             voice.setPitch(pitch);
-//	             voice.setVolume(volume_);
-//	             voice.speak(reversedContent);
-//	             voice.deallocate();
-//	             speechCompleted=true;
-//	    }
-	    return speechCompleted;
+
 	}
 	
-	public boolean playEncodedContent(String content) {
-		boolean speechCompleted=false;
+	public void playEncodedContent(String content,String TTSApi) {
 		String normalContent =content;//ev.getEditorText();
 		String encodedContent;
-//		System.setProperty("freetts.voices", "com.sun.speech.freetts.en.us.cmu_us_kal.KevinVoiceDirectory");
-//	    Voice voice =VoiceManager.getInstance().getVoice("kevin16");
-	    
-	    //create the encoded text
-	    
+	    //create the encoded text 
 	    encodingStrategy enc_strat=strat.createStrategy(encoding_method);
 	    encodedContent=enc_strat.encode(normalContent);
-	    Text2SpeechAPI apiInter=apiFact.createTTSAPI("");
-		apiInter.setPitch(pitch);
-		apiInter.setRate(rate);
-		apiInter.setVolume(volume_);
+	    Text2SpeechAPI apiInter=apiFact.createTTSAPI(TTSApi);
 		apiInter.play(encodedContent);
-	    
-//	    if (voice != null) {
-//	             voice.allocate();//Allocating Voice
-//	             voice.setRate(rate);
-//	             voice.setPitch(pitch);
-//	             voice.setVolume(volume_);
-//	             voice.speak(encodedContent);
-//	             voice.deallocate();
-//	             speechCompleted=true;
-//	    }
-	    return speechCompleted;
+
 		
 	}
-	public boolean playEncodedLine(String content) {
-		boolean speechCompleted=false;
+	public void playEncodedLine(String content,String TTSApi) {
 		String lineContent=content;//ev.getEditorSelectedLine();
 		String encodedLineContent=null;
 		encodingStrategy enc_strat=strat.createStrategy(encoding_method);
 		if(lineContent!=null) {
 			encodedLineContent=enc_strat.encode(lineContent);
 		}
-		Text2SpeechAPI apiInter=apiFact.createTTSAPI("");
-		apiInter.setPitch(pitch);
-		apiInter.setRate(rate);
-		apiInter.setVolume(volume_);
+		Text2SpeechAPI apiInter=apiFact.createTTSAPI(TTSApi);
 		apiInter.play(encodedLineContent);
-//		System.setProperty("freetts.voices", "com.sun.speech.freetts.en.us.cmu_us_kal.KevinVoiceDirectory");
-//	    Voice voice =VoiceManager.getInstance().getVoice("kevin16");
-//	    if (voice != null && encodedLineContent!=null) {
-//	             voice.allocate();//Allocating Voice
-//	             voice.setRate(rate);
-//	             voice.setPitch(pitch);
-//	             voice.setVolume(volume_);
-//	             voice.speak(encodedLineContent);
-//	             voice.deallocate();
-//	             speechCompleted=true;
-//	    }
-		return speechCompleted;
+
 	}
 	
 	//creates the reverse text
@@ -309,83 +199,15 @@ public class Document {
 		return sb.toString();
 	}
 	
-	public String CreateEncoding(String TextOrLine) {
-		String cipher_text="";
-		
-		if(encoding_method.equals("Rot-13")) {
-			cipher_text=rot13(TextOrLine);
-			System.out.println(cipher_text);
 
-		}
-		else {
-			cipher_text=atbash(TextOrLine);
-			System.out.println(cipher_text);
-		}
-		return cipher_text;
-		
-	}
 	
 	public void tuneEncoding(encodingStrategy strat) {
 		//strat.
 	}
 	
-	public String atbash (String textToEncode) {
-		String allchar = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-		
-		textToEncode=textToEncode.replaceAll(" ", "");
-		textToEncode=textToEncode.toUpperCase();
-		
-		String cipher="";
-		int len=textToEncode.length();
-		int alphabetLen=allchar.length();
-		for(int i=0; i<len; i++)
-        {
-            char b=textToEncode.charAt(i);
-            for(int j=0; j<alphabetLen; j++)
-            {
-                char c=allchar.charAt(j);
-                if(c == b)
-                {
-                	int index=allchar.indexOf(c);
-                	int position=(alphabetLen-1)-index;
-                    cipher+= allchar.charAt(position);
-                    break;
-                      
-                }          
-            }
-        }
-		System.out.println("cipher:"+cipher);
-		return cipher;
-	}
+
 	
-    public  String rot13(String value) {
-
-        char[] values = value.toCharArray();
-        for (int i = 0; i < values.length; i++) {
-            char letter = values[i];
-
-            if (letter >= 'a' && letter <= 'z') {
-                // Rotate lowercase letters.
-
-                if (letter > 'm') {
-                    letter -= 13;
-                } else {
-                    letter += 13;
-                }
-            } else if (letter >= 'A' && letter <= 'Z') {
-                // Rotate uppercase letters.
-
-                if (letter > 'M') {
-                    letter -= 13;
-                } else {
-                    letter += 13;
-                }
-            }
-            values[i] = letter;
-        }
-        // Convert array to a new String.
-        return new String(values);
-    }
+   
 	
 	//clears the documents list
 	public void emptyList() {
@@ -393,33 +215,6 @@ public class Document {
 	}
 	
 	
-	public void setVolume(int sliderVolumeValue) {
-		//devide volume with 10 cause TTS volume  has values in range 0.0-1.0
-		//volume=sliderVolumeValue;
-		volume_=(float)sliderVolumeValue/10;
-		System.out.println("Volume is f="+volume_);
-	}
-	public int getVolume() {
-		float vol=volume_*10;
-		System.out.println("Vol="+(int)vol);
-		return (int)vol;
-	}
-
-	public void setRate(int sliderRateValue) {
-		rate=sliderRateValue;
-		System.out.println("Rate is ="+rate);
-	}
-	public int getRate() {
-		return rate;
-	}
-	
-	public void setPitch(int sliderPitchValue) {
-		pitch=sliderPitchValue;
-		System.out.println("Pitch is ="+pitch);
-	}
-	public int getPitch() {
-		return pitch;
-	}
 	
 	public void setEncodingMethod(String encodingMethod) {
 		encoding_method=encodingMethod;

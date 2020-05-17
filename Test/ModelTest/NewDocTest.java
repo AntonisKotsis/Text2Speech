@@ -1,16 +1,23 @@
 package ModelTest;
 
+import static org.junit.Assert.assertEquals;
+
 import org.junit.jupiter.api.Test;
 
+import GUI.EditorView;
 import Model.Document;
 
 class NewDocTest {
 
 	@Test
-	void test() {
-	//	fail("Not yet implemented");
-		Document doc =new Document("Alexandra","Alexandra's Secret","Alexandra's Secret");
-		doc.createNewEmptyDocument(doc);
+	void test() {	
+		EditorView ev=new EditorView();
+		String [] args= {" "," "};
+		String text;
+		ev.main(args);		
+		ev.createNewFilePopUpFrame();
+		text=ev.getEditorText();
+		assertEquals("",text);
 	
 	}
 

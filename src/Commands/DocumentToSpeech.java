@@ -15,10 +15,10 @@ public class DocumentToSpeech implements ActionListener {
 		EditorView ev=new EditorView();
 		System.out.println(arg0.getActionCommand());
 		if(arg0.getActionCommand().equals("Entire File")) {
-			doc.playContent(ev.getEditorText());
+			doc.playContent(ev.getEditorText(),"FreeTTS");
 		}
 		else {
-			doc.playReversedContent(ev.getEditorText());
+			doc.playReversedContent(ev.getEditorText(),"FreeTTS");
 		}
 		
 		

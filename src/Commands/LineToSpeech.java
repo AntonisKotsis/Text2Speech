@@ -15,10 +15,10 @@ public class LineToSpeech implements ActionListener {
 		EditorView ev =new EditorView();
 		System.out.println(arg0.getActionCommand());
 		if(arg0.getActionCommand().equals("Single Line")) {
-			doc.playLine(ev.getEditorSelectedLine());
+			doc.playLine(ev.getEditorSelectedLine(),"FreeTTS");
 		}
 		else {
-			doc.playReversedLine(ev.getEditorSelectedLine());
+			doc.playReversedLine(ev.getEditorSelectedLine(),"FreeTTS");
 		}
 		
 	}

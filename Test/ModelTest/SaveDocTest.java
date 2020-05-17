@@ -2,6 +2,8 @@ package ModelTest;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.io.FileNotFoundException;
+
 import org.junit.jupiter.api.Test;
 
 import GUI.EditorView;
@@ -10,17 +12,22 @@ import Model.Document;
 class SaveDocTest {
 
 	@Test
-	void test() {
+	void test() throws FileNotFoundException {
+		String text="Save testing text\n";
+		String res="";
 		EditorView ev=new EditorView();
 		String [] args= {" "," "};
 		ev.main(args);
+		ev.createNewFilePopUpFrame();
+		ev.setTextArea(text);
+		ev.createSaveFilePopUpFrame();
+		ev.createFileBrowser();
+		res=ev.getEditorText();
 		
-		Document doc =new Document("test","test1","test1");
-		doc.addToDocList(doc);
-		boolean res;
+	
+		assertEquals(res,text);
 		
-		res= doc.saveNewDocument("test_save_doc");
-		assertEquals(res,true);
+		
 	}
 
 }

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<com.yattasolutions.uml.diagrams.classifier:ClassDiagram xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:com.yattasolutions.uml.diagrams.classifier="http://ns.yatta-solutions.com/umllab/diagrams/classifier/1.1.0" xmi:id="_ctsjgHtHEeq2-sdR5YN4Yg">
+  <modelElement href="packetDiagram.uml#_csC9sHtHEeq2-sdR5YN4Yg"/>
+  <nodes xsi:type="com.yattasolutions.uml.diagrams.classifier:PackageVisual" xmi:id="_hQyUMXtHEeq2-sdR5YN4Yg" name="Commands">
+    <modelElement href="packetDiagram.uml#_hQyUMHtHEeq2-sdR5YN4Yg"/>
+    <visualProperties xmi:id="_hQyUMntHEeq2-sdR5YN4Yg" position="179.0,105.0" size="178.0,140.0"/>
+  </nodes>
+  <nodes xsi:type="com.yattasolutions.uml.diagrams.classifier:PackageVisual" xmi:id="_qS0VYXtHEeq2-sdR5YN4Yg" name="TextToSpeechAPI">
+    <modelElement href="packetDiagram.uml#_qS0VYHtHEeq2-sdR5YN4Yg"/>
+    <visualProperties xmi:id="_qS0VYntHEeq2-sdR5YN4Yg" position="674.0,388.0" size="182.0,133.0"/>
+  </nodes>
+  <nodes xsi:type="com.yattasolutions.uml.diagrams.classifier:PackageVisual" xmi:id="_nqiEgXtHEeq2-sdR5YN4Yg" name="encodingStrategies">
+    <modelElement href="packetDiagram.uml#_nqiEgHtHEeq2-sdR5YN4Yg"/>
+    <visualProperties xmi:id="_nqiEgntHEeq2-sdR5YN4Yg" position="251.0,380.0" size="186.0,140.0"/>
+  </nodes>
+  <nodes xsi:type="com.yattasolutions.uml.diagrams.classifier:PackageVisual" xmi:id="_kl5O0HtHEeq2-sdR5YN4Yg" name="Model">
+    <modelElement href="packetDiagram.uml#_klls0HtHEeq2-sdR5YN4Yg"/>
+    <visualProperties xmi:id="_kl5O0XtHEeq2-sdR5YN4Yg" position="744.0,127.0" size="192.0,124.0"/>
+  </nodes>
+  <nodes xsi:type="com.yattasolutions.uml.diagrams.classifier:PackageVisual" xmi:id="_eOZhQXtHEeq2-sdR5YN4Yg" name="GUI">
+    <modelElement href="packetDiagram.uml#_eOZhQHtHEeq2-sdR5YN4Yg"/>
+    <visualProperties xmi:id="_eOZhQntHEeq2-sdR5YN4Yg" position="476.0,-18.0" size="173.0,133.0"/>
+  </nodes>
+</com.yattasolutions.uml.diagrams.classifier:ClassDiagram>

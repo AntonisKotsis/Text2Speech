@@ -16,21 +16,21 @@ class OpenDocTest {
 	@Test
 	void test() {
 		//fail("Not yet implemented");
-		
-		EditorView ev=new EditorView();
 		String [] args= {" "," "};
-		ev.main(args);
-		Document doc =new Document("test","test1","test1");
-		boolean res;
+		EditorView ev=new EditorView();
+		String text="This is a test string\n";
+		String res="";
 		try {
-			res=doc.openDocument(new File("test54.txt"), doc);
+			ev.main(args);
+			ev.createFileBrowser();
+			res=ev.getEditorText();
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			res=false;
+
 			e.printStackTrace();
 		}
-		
-		assertEquals(res,true);
+		System.out.println(res);
+		System.out.println(text);
+		assertEquals(res,text);
 	}
 
 }

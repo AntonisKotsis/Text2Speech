@@ -5,6 +5,7 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 
 import Model.Document;
+import encodingStrategies.*;
 
 public class EncodeTest {
 
@@ -12,11 +13,15 @@ public class EncodeTest {
 	public void test() {
 		//fail("Not yet implemented");
 		Document doc=new Document();
-		String atbash_res=doc.atbash("test");
-		assertEquals(atbash_res,"GVHG");
 		
-		String rot13_res=doc.rot13("test");
-		assertEquals(rot13_res,"grfg");
+		Atbash at=new Atbash();
+		String newat=at.encode("test");
+		
+		Rot13 rot=new Rot13();
+		rot.encode("test");
+		
+		assertEquals(rot.encode("test"),"grfg");
+		assertEquals(newat,"GVHG");
 	}
 
 }
