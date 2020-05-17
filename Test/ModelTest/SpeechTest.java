@@ -4,37 +4,48 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
+import GUI.EditorView;
 import Model.Document;
+import TextToSpeechAPI.FakeTTsAPI;
+import encodingStrategies.Atbash;
+import encodingStrategies.Rot13;
 
 class SpeechTest {
 
 	@Test
 	void test() {
 		//fail("Not yet implemented");
-		Document doc =new Document();
-		String line_content="Check Line";
-		Boolean res=doc.playLine(line_content);
-		assertEquals(res, true);
+		EditorView ev=new EditorView();
+		Document doc=new Document();
+		FakeTTsAPI fake=new FakeTTsAPI();
+		String [] args= {" "," "};
+		String TestText="Convert this to speech";
+		String ReverseTestText="speech to this Convert";
+		Atbash at=new Atbash();
+		String newat=at.encode(TestText);
+		Rot13 rot=new Rot13();
+		String newrot=rot.encode(TestText);
+		ev.main(args);		
 		
-		String doc_content="Check whole document";
-		res=doc.playContent(doc_content);
-		assertEquals(res,true);
+		//test each function that uses the SpeechAPI
+		doc.playContent(TestText, "fakeTTS");
+		assertEquals(TestText,fake.getTestText());
 		
-		String rev_doc_content="Read that in reverse mode";
-		res=doc.playReversedContent(rev_doc_content);
-		assertEquals(res,true);
+		doc.playLine(TestText, "fakeTTS");
+		assertEquals(TestText,fake.getTestText());
 		
-		String rev_line_content="Read this line in reverse mode";
-		res=doc.playReversedLine(rev_line_content);
-		assertEquals(res,true);
+		doc.playReversedContent(TestText, "fakeTTS");
+		assertEquals(ReverseTestText,fake.getTestText().trim());
 		
-		String enc_doc_content="Encode this text";
-		res=doc.playEncodedContent(enc_doc_content);
-		assertEquals(res,true);
+		doc.playReversedLine(TestText, "fakeTTS");
+		assertEquals(ReverseTestText,fake.getTestText().trim());
 		
-		String enc_line_content="Encode this line";
-		res=doc.playEncodedLine(enc_line_content);
-		assertEquals(res,true);
+		doc.playEncodedContent(TestText, "fakeTTS");
+		assertEquals(newrot,fake.getTestText());
+		
+		doc.playEncodedLine(TestText, "fakeTTS");
+		assertEquals(newrot,fake.getTestText());
+		
 		
 	}
 

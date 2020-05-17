@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xmi:XMI xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:UMLLabProfile="http:///schemas/UMLLabProfile/NS/0" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xsi:schemaLocation="http:///schemas/UMLLabProfile/NS/0 pathmap://UMLLAB_PROFILES/UMLLab.profile.uml#UMLLabProfile-Annotation_2-UMLLabProfile">
+  <uml:Model xmi:id="_csC9sHtHEeq2-sdR5YN4Yg" name="packetDiagram">
+    <eAnnotations xmi:id="_cwZ5QHtHEeq2-sdR5YN4Yg" source="http://ns.yatta.de/umllab">
+      <contents xmi:type="ecore:EAnnotation" xmi:id="_cwZ5QXtHEeq2-sdR5YN4Yg" source="codegen">
+        <details xmi:id="_cwZ5QntHEeq2-sdR5YN4Yg" key="codegenDirectory" value="/Text2Speech/src"/>
+      </contents>
+    </eAnnotations>
+    <packagedElement xmi:type="uml:Package" xmi:id="_eOZhQHtHEeq2-sdR5YN4Yg" name="GUI"/>
+    <packagedElement xmi:type="uml:Package" xmi:id="_hQyUMHtHEeq2-sdR5YN4Yg" name="Commands"/>
+    <packagedElement xmi:type="uml:Package" xmi:id="_jrAT4HtHEeq2-sdR5YN4Yg" name="GUI_1" visibility="public"/>
+    <packagedElement xmi:type="uml:Package" xmi:id="_klls0HtHEeq2-sdR5YN4Yg" name="Model" visibility="public"/>
+    <packagedElement xmi:type="uml:Package" xmi:id="_nqiEgHtHEeq2-sdR5YN4Yg" name="encodingStrategies"/>
+    <packagedElement xmi:type="uml:Package" xmi:id="_qS0VYHtHEeq2-sdR5YN4Yg" name="TextToSpeechAPI"/>
+    <profileApplication xmi:id="_cwagUHtHEeq2-sdR5YN4Yg">
+      <eAnnotations xmi:id="_cwagUXtHEeq2-sdR5YN4Yg" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="pathmap://UMLLAB_PROFILES/UMLLab.profile.uml#UMLLabProfile-Annotation_2-UMLLabProfile"/>
+      </eAnnotations>
+      <appliedProfile href="pathmap://UMLLAB_PROFILES/UMLLab.profile.uml#UMLLabProfile"/>
+    </profileApplication>
+  </uml:Model>
+  <UMLLabProfile:TargetLanguage xmi:id="_cwbHYHtHEeq2-sdR5YN4Yg" base_Package="_csC9sHtHEeq2-sdR5YN4Yg">
+    <languageName>java</languageName>
+  </UMLLabProfile:TargetLanguage>
+</xmi:XMI>
